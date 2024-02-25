@@ -16,18 +16,17 @@ import java.util.List;
 @Document(collection = "Combo")
 public class Combo {
     @Id
-    @Field(name="_id")
     private String id;
     private String name;
     @DBRef
-    private List<Book> bookIds; // IDs of books included in the combo
+    private List<String> bookIds; // IDs of books included in the combo
     private String description;
 
-       public Combo(String name, List<Book> bookIds, String description) {
-            this.name = name;
-            this.bookIds = bookIds;
-            this.description = description;
-        }
+    public Combo(String name, List<String> bookIds, String description) {
+        this.name = name;
+        this.bookIds = bookIds;
+        this.description = description;
+    }
 
 
 

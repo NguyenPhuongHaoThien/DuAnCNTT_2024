@@ -19,18 +19,21 @@ import java.util.Date;
 @Document(collection = "OderItem")
 public class OrderItem {
     @Id
-    @Field(name="_id")
     private String id;
-    @DBRef
-    private Order order;
-    @DBRef
-    // ID of either a book or a combo
-    private Book book;
-    @DBRef
-    private Combo combo;
+    private String orderId;
+    private String bookId;
+    private String comboId;
 
     private int quantity;
     private Date date;
     private boolean isCombo;
 
+    public OrderItem(String orderId, String bookId, String comboId, int quantity, Date date, boolean isCombo) {
+        this.orderId = orderId;
+        this.bookId = bookId;
+        this.comboId = comboId;
+        this.quantity = quantity;
+        this.date = date;
+        this.isCombo = isCombo;
+    }
 }

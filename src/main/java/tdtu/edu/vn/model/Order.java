@@ -20,29 +20,27 @@ import java.util.List;
 @Document(collection = "Order")
 public class Order {
     @Id
-    @Field(name="_id")
     private String id;
-    @DBRef
-    private User user;
-    @DBRef
-    private List<ActivationCode> activationCodes; // Danh sách mã kích hoạt mua
+    private User userId;
+    private List<String> activationCodeIds; // Danh sách mã kích hoạt mua
     private double totalAmount; // Tổng số tiền
     private Date orderDate; // Ngày đặt hàng
     private OrderStatus orderStatus; // Trạng thái đơn hàng
 
+    public Order(User userId, List<String> activationCodeIds, double totalAmount, Date orderDate, OrderStatus orderStatus) {
+        this.userId = userId;
+        this.activationCodeIds = activationCodeIds;
+        this.totalAmount = totalAmount;
+        this.orderDate = orderDate;
+        this.orderStatus = orderStatus;
+    }
     private enum OrderStatus {
         ORDERED,
         DELIVERED,
         CANCELLED
     }
 
-    public Order(User user, List<ActivationCode> activationCodes, double totalAmount, Date orderDate, OrderStatus orderStatus) {
-        this.user = user;
-        this.activationCodes = activationCodes;
-        this.totalAmount = totalAmount;
-        this.orderDate = orderDate;
-        this.orderStatus = orderStatus;
-    }
+
 
 
 

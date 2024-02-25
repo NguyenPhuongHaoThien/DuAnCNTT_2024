@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 public class Author {
 
     @Id
-    @Field(name="_id")
     private String id;
     private String name;
     private String description;

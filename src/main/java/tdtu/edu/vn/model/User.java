@@ -16,7 +16,6 @@ import java.util.Date;
 @Document(collection = "user")
 public class User implements Serializable {
     @Id
-    @Field(name="_id")
     private String id;
     private String username;
     private String email;

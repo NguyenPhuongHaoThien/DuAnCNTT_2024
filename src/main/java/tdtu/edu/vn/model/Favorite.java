@@ -14,7 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "Favorite")
 public class Favorite{
     @Id
-    @Field(name="_id")
     private String id;
     private String userId;
     private String bookId;
