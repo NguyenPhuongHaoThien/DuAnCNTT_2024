@@ -21,12 +21,9 @@ import java.util.List;
 
 public class ActivationCode {
     @Id
-    @Field(name="_id")
     private String id;
-    @DBRef
-    private List<Book> book; // Can be one or multiple for combos
-    @DBRef
-    private Order order;
+    private List<String> bookId; // Can be one or multiple for combos
+    private Order orderId;
     private String code;
     private Date startDate;
     private Date endDate;
@@ -34,9 +31,9 @@ public class ActivationCode {
     private boolean isCombo; // True if it's a combo
 
 
-    public ActivationCode(List<Book> book, Order order, String code, Date startDate, Date endDate, ActivationCodeStatus status, boolean isCombo) {
-        this.book = book;
-        this.order = order;
+    public ActivationCode(List<String> bookId, Order orderId, String code, Date startDate, Date endDate, ActivationCodeStatus status, boolean isCombo) {
+        this.bookId = bookId;
+        this.orderId = orderId;
         this.code = code;
         this.startDate = startDate;
         this.endDate = endDate;

@@ -19,42 +19,36 @@ import java.io.Serializable;
 @Document(collection = "Book")
 public class Book implements Serializable {
     @Id
-    @Field(name="_id")
     private String id;
     private String name;
     private String price;
     private String quantity;
-    @DBRef
-    private Author author;
-    @DBRef
-    private Publisher publisher;
-    @DBRef
-    private Category category;
+    private Author authorId;
+    private Publisher publisherId;
+    private Category categoryId;
     private String thumbnail;
     private String pdfUrl;
     private String publicationDate;
     private String description;
-    @DBRef
-    private Discount discount;
+    private Discount discountId;
     private Boolean drmEnabled;
     private String status;
 
 
-    public Book(String name, String price, String quantity, Author author, Publisher publisher, Category category, String thumbnail, String pdfUrl, String publicationDate, String description, Discount discount, Boolean drmEnabled,String status) {
+    public Book(String name, String price, String quantity, Author authorId, Publisher publisherId, Category categoryId, String thumbnail, String pdfUrl, String publicationDate, String description, Discount discountId, Boolean drmEnabled, String status) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.author = author;
-        this.publisher = publisher;
-        this.category = category;
+        this.authorId = authorId;
+        this.publisherId = publisherId;
+        this.categoryId = categoryId;
         this.thumbnail = thumbnail;
         this.pdfUrl = pdfUrl;
         this.publicationDate = publicationDate;
         this.description = description;
+        this.discountId = discountId;
         this.drmEnabled = drmEnabled;
-        this.discount = discount;
         this.status = status;
     }
-
 
 }

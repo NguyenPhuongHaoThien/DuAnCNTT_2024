@@ -15,7 +15,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "publisher")
 public class Publisher{
     @Id
-    @Field("_id")
     private String id;
     private String name;
     private String address;

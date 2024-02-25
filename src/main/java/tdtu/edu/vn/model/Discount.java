@@ -14,7 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "Discount")
 public class Discount {
     @Id
-    @Field(name="_id")
     private String id;
     private String name;
     private String discount;
