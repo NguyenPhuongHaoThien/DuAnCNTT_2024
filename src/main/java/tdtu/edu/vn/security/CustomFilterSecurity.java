@@ -23,7 +23,7 @@ public class CustomFilterSecurity {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)// Không sử dụng session
                 .and()
                 .authorizeHttpRequests() // Bắt đầu cấu hình cho request
-                .requestMatchers("/login", "/register").permitAll()
+                .antMatchers("/login", "/register", "/home/**").permitAll()
                 .anyRequest().authenticated() // Tất cả các request khác đều cần xác thực
                 .and()
                 // Disable form login
