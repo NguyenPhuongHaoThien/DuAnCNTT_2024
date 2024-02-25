@@ -22,33 +22,19 @@ public class Book implements Serializable {
     private String id;
     private String name;
     private String price;
-    private String quantity;
-    private Author authorId;
-    private Publisher publisherId;
-    private Category categoryId;
+    private int quantity;
+    private String authorId;
+    private String publisherId;
+    private String categoryId;
     private String thumbnail;
     private String pdfUrl;
     private String publicationDate;
     private String description;
-    private Discount discountId;
+    private String discountId;
     private Boolean drmEnabled;
     private String status;
 
 
-    public Book(String name, String price, String quantity, Author authorId, Publisher publisherId, Category categoryId, String thumbnail, String pdfUrl, String publicationDate, String description, Discount discountId, Boolean drmEnabled, String status) {
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
-        this.authorId = authorId;
-        this.publisherId = publisherId;
-        this.categoryId = categoryId;
-        this.thumbnail = thumbnail;
-        this.pdfUrl = pdfUrl;
-        this.publicationDate = publicationDate;
-        this.description = description;
-        this.discountId = discountId;
-        this.drmEnabled = drmEnabled;
-        this.status = status;
-    }
+
 
 }
