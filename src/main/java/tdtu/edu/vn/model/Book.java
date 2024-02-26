@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -20,6 +21,7 @@ import java.io.Serializable;
 public class Book implements Serializable {
     @Id
     private String id;
+    @TextIndexed
     private String name;
     private String price;
     private int quantity;
@@ -33,6 +35,22 @@ public class Book implements Serializable {
     private String discountId;
     private Boolean drmEnabled;
     private String status;
+
+    public Book(String name, String price, int quantity, String authorId, String publisherId, String categoryId, String thumbnail, String pdfUrl, String publicationDate, String description, String discountId, Boolean drmEnabled, String status) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.authorId = authorId;
+        this.publisherId = publisherId;
+        this.categoryId = categoryId;
+        this.thumbnail = thumbnail;
+        this.pdfUrl = pdfUrl;
+        this.publicationDate = publicationDate;
+        this.description = description;
+        this.discountId = discountId;
+        this.drmEnabled = drmEnabled;
+        this.status = status;
+    }
 
 
 
