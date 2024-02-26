@@ -6,8 +6,10 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import tdtu.edu.vn.model.ActivationCode;
 import tdtu.edu.vn.model.Book;
 import tdtu.edu.vn.repository.BookRepository;
 
@@ -27,6 +29,9 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private ActivationCodeService activationCodeRes;
+
     public Page<Book> getAllBooks(Pageable pageable){
         return bookRepository.findAll(pageable);
     }
@@ -35,9 +40,20 @@ public class BookService {
         return bookRepository.findById(id).get();
     }
 
-    public ResponseEntity<InputStreamResource> getBookPdf(String id) {
+    public ResponseEntity<InputStreamResource> getBookPdf(String id, String activationCode) {
         Book book = bookRepository.findById(id).orElse(null);
         if (book != null) {
+            if(book.getDrmEnabled()){
+                List<ActivationCode> codes = activationCodeRes.findAllByCode(activationCode);
+                if(codes.isEmpty()){
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+                }
+                ActivationCode code = codes.get(0);
+                System.out.println("Activation code status: " + code.getStatus());
+                if(code.getStatus() != ActivationCode.ActivationCodeStatus.UNUSED){
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+                }
+            }
             try {
                 Path path = Paths.get(book.getPdfUrl());
                 if (Files.exists(path)) {

@@ -21,13 +21,13 @@ import java.util.List;
 public class Order {
     @Id
     private String id;
-    private User userId;
+    private String userId;
     private List<String> activationCodeIds; // Danh sách mã kích hoạt mua
     private double totalAmount; // Tổng số tiền
     private Date orderDate; // Ngày đặt hàng
     private OrderStatus orderStatus; // Trạng thái đơn hàng
 
-    public Order(User userId, List<String> activationCodeIds, double totalAmount, Date orderDate, OrderStatus orderStatus) {
+    public Order(String userId, List<String> activationCodeIds, double totalAmount, Date orderDate, OrderStatus orderStatus) {
         this.userId = userId;
         this.activationCodeIds = activationCodeIds;
         this.totalAmount = totalAmount;

@@ -26,7 +26,8 @@ public class CustomFilterSecurity {
                 .antMatchers("/login",
                         "/register",
                         "/home/**",
-                        "/read/**").permitAll()
+                        "/read/**",
+                        "/activation/**").permitAll()
                 .anyRequest().authenticated() // Tất cả các request khác đều cần xác thực
                 .and()
                 // Disable form login

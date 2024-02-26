@@ -17,8 +17,8 @@ public class ReadController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping("/{id}/pdf")
-    public ResponseEntity<InputStreamResource> getBookPdf(@PathVariable String id) throws IOException {
-        return bookService.getBookPdf(id);
+    @GetMapping("/{id}/pdf/{activationCode}")
+    public ResponseEntity<InputStreamResource> getBookPdf(@PathVariable String id, @PathVariable String activationCode) throws IOException {
+        return bookService.getBookPdf(id, activationCode);
     }
 }
