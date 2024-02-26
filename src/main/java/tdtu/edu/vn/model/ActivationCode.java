@@ -23,7 +23,7 @@ public class ActivationCode {
     @Id
     private String id;
     private List<String> bookId; // Can be one or multiple for combos
-    private Order orderId;
+    private String orderId;
     private String code;
     private Date startDate;
     private Date endDate;
@@ -31,15 +31,8 @@ public class ActivationCode {
     private boolean isCombo; // True if it's a combo
 
 
-    public ActivationCode(List<String> bookId, Order orderId, String code, Date startDate, Date endDate, ActivationCodeStatus status, boolean isCombo) {
-        this.bookId = bookId;
-        this.orderId = orderId;
-        this.code = code;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.status = status;
-        this.isCombo = isCombo;
-    }
+
+
 
     public enum ActivationCodeStatus {
         UNUSED,
