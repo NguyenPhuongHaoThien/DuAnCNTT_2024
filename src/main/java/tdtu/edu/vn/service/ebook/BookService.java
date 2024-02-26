@@ -4,6 +4,7 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,10 @@ public class BookService {
             }
         }
         return ResponseEntity.notFound().build();
+    }
+
+    public Page<Book> searchBooks(String searchTerm, Pageable pageable) {
+        return bookRepository.searchByName(searchTerm, pageable);
     }
 
 

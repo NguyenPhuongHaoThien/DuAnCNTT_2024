@@ -30,5 +30,10 @@ public class BookController {
         return ResponseEntity.ok(book);
     }
 
+    @GetMapping("/search")
+    public Page<Book> searchBooks(@RequestParam String searchTerm){
+        return bookService.searchBooks(searchTerm, PageRequest.of(0, 3));
+    }
+
 
 }
