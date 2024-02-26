@@ -14,5 +14,5 @@ public interface BookRepository extends MongoRepository<Book, String> {
     @Query(value = "{ $text: { $search:  ?0 } }", sort = "{ score: { $meta: \"textScore\" }, _id: -1 }")
     Page<Book> searchByName(String keyword, Pageable pageable);
 
-
+    Page<Book> findByCategoryId(String categoryId, Pageable pageable);
 }

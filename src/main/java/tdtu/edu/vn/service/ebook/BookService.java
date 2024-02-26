@@ -20,6 +20,7 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Service
 public class BookService {
@@ -56,6 +57,10 @@ public class BookService {
 
     public Page<Book> searchBooks(String searchTerm, Pageable pageable) {
         return bookRepository.searchByName(searchTerm, pageable);
+    }
+
+    public Page<Book> findCategory(String categoryId, Pageable pageable) {
+        return bookRepository.findByCategoryId(categoryId, pageable);
     }
 
 

@@ -3,6 +3,7 @@ package tdtu.edu.vn.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tdtu.edu.vn.model.Book;
@@ -11,7 +12,7 @@ import tdtu.edu.vn.service.ebook.BookService;
 @RestController
 @RequestMapping("/home")
 public class BookController {
-    @Autowired // Add this annotation
+    @Autowired
     private BookService bookService;
 
     @GetMapping()
@@ -31,8 +32,18 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public Page<Book> searchBooks(@RequestParam String searchTerm){
-        return bookService.searchBooks(searchTerm, PageRequest.of(0, 3));
+    public Page<Book> searchBooks(@RequestParam String searchTerm,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size){
+        return bookService.searchBooks(searchTerm, PageRequest.of(page, size));
+    }
+
+    @GetMapping("category/{categoryId}")
+    public Page<Book> getBooksByCategory(@PathVariable String categoryId,
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size){
+        return bookService.findCategory(categoryId, PageRequest.of(page, size));
+
     }
 
 
