@@ -1,78 +1,83 @@
 package tdtu.edu.vn.service.ebook;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
+import lombok.AllArgsConstructor;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
+import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import tdtu.edu.vn.model.ActivationCode;
-import tdtu.edu.vn.model.Book;
-import tdtu.edu.vn.repository.BookRepository;
+import tdtu.edu.vn.model.Document;
+import tdtu.edu.vn.repository.DocumentRepository;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class DocumentService {
-    @Autowired
-    private BookRepository bookRepository;
+    private DocumentRepository documentRepository;
 
-    @Autowired
-    private ActivationCodeService activationCodeRes;
-
-    public Page<Book> getAllBooks(Pageable pageable){
-        return bookRepository.findAll(pageable);
+    public Page<Document> getAllDocuments(Pageable pageable) {
+        return documentRepository.findAll(pageable);
     }
 
-    public Book getBookById(String id){
-        return bookRepository.findById(id).get();
+    public Document getDocumentById(String id) {
+        return documentRepository.findById(id).get();
     }
 
-    public ResponseEntity<InputStreamResource> getBookPdf(String id, String activationCode) {
-        Book book = bookRepository.findById(id).orElse(null);
-        if (book != null) {
-            if(book.getDrmEnabled()){
-                List<ActivationCode> codes = activationCodeRes.findAllByCode(activationCode);
-                if(codes.isEmpty()){
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-                }
-                ActivationCode code = codes.get(0);
-                System.out.println("Activation code status: " + code.getStatus());
-                if(code.getStatus() != ActivationCode.ActivationCodeStatus.UNUSED){
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-                }
-            }
-            try {
-                Path path = Paths.get(book.getPdfUrl());
-                if (Files.exists(path)) {
-                    InputStream inputStream = new FileInputStream(path.toFile());
-                    return ResponseEntity.ok()
-                            .header("Content-Disposition", "attachment; filename=" + book.getName() + ".pdf")
-                            .body(new InputStreamResource(inputStream));
-                } else {
-                    System.out.println("File not found: " + book.getPdfUrl());
-                }
-            } catch (IOException e) {
-                System.out.println("Cannot open file: " + book.getPdfUrl());
-            }
+    public Page<Document> searchDocuments(String searchTerm, Pageable pageable) {
+        return documentRepository.searchByName(searchTerm, pageable);
+    }
+
+    public Page<Document> findCategory(String categoryId, Pageable pageable) {
+        return documentRepository.findByCategoryId(categoryId, pageable);
+    }
+
+    public Document createDocument(Document document) {
+        return documentRepository.save(document);
+    }
+
+    public Document updateDocument(Document document) {
+        if (!documentRepository.existsById(document.getId())) {
+            return null;
         }
-        return ResponseEntity.notFound().build();
+
+        return documentRepository.save(document);
     }
 
-    public Page<Book> searchBooks(String searchTerm, Pageable pageable) {
-        return bookRepository.searchByName(searchTerm, pageable);
+    public boolean deleteDocument(String id) {
+        try {
+            documentRepository.deleteById(id);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
     }
 
-    public Page<Book> findCategory(String categoryId, Pageable pageable) {
-        return bookRepository.findByCategoryId(categoryId, pageable);
+    public Document encryptDocument(Document document) throws IOException {
+        File sourceFile = new File(document.getPdfUrl());
+        File encryptedFile = encryptPDF(sourceFile.getAbsolutePath());
+        String encryptedPdfUrl = encryptedFile.getAbsolutePath();
+        document.setPdfUrl(encryptedPdfUrl);
+        document.setDrmEnabled(true);
+
+        return document;
     }
 
+    private File encryptPDF(String sourceFile) throws IOException {
+        PDDocument doc = PDDocument.load(new File(sourceFile));
+        AccessPermission ap = new AccessPermission();
+        StandardProtectionPolicy spp = new StandardProtectionPolicy("owner", "user", ap);
+        spp.setEncryptionKeyLength(128);
+        spp.setPermissions(ap);
+        doc.protect(spp);
 
+        File encryptedFile = File.createTempFile("encrypted", ".pdf");
+        doc.save(encryptedFile);
+        doc.close();
+
+        return encryptedFile;
+    }
 }

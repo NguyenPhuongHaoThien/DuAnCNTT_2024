@@ -17,13 +17,5 @@ public class ActivationCodeController {
     @Autowired
     private ActivationCodeService activationCodeService;
 
-    @PostMapping("/validate")
-    public ResponseEntity<String> validateCode(@RequestBody String code){
-        List<ActivationCode> activationCodes = activationCodeService.findAllByCode(code);
-        if(activationCodes.isEmpty()){
-            return ResponseEntity.ok("Code is invalid.");
-        }
-        ActivationCode.ActivationCodeStatus status = activationCodes.get(0).getStatus();
-        return ResponseEntity.ok(status.toString());
-    }
+
 }
