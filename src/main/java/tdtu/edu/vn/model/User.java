@@ -29,8 +29,7 @@ public class User implements Serializable {
     private Date createday;
     private String subscribe;
     private byte[] avatar;
-    @DBRef
-    private Role role;
+    private String role;
     private boolean isLocked = false;
     private boolean personlocked = false;
     private boolean isDeleted = false;
@@ -40,11 +39,6 @@ public class User implements Serializable {
         this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
-
-    }
-
-    public Object orElseThrow() {
-        return null;
     }
 }
 

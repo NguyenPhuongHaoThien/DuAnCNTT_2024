@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tdtu.edu.vn.service.ebook.BookService;
+import tdtu.edu.vn.service.ebook.DocumentService;
 
 import java.io.IOException;
 
@@ -15,10 +15,10 @@ import java.io.IOException;
 @RequestMapping("/read")
 public class ReadController {
     @Autowired
-    private BookService bookService;
+    private DocumentService documentService;
 
     @GetMapping("/{id}/pdf/{activationCode}")
     public ResponseEntity<InputStreamResource> getBookPdf(@PathVariable String id, @PathVariable String activationCode) throws IOException {
-        return bookService.getBookPdf(id, activationCode);
+        return documentService.getBookPdf(id, activationCode);
     }
 }
