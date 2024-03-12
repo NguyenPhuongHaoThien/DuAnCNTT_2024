@@ -22,19 +22,12 @@ public class Order {
     @Id
     private String id;
     private String userId;
-    private List<String> activationCodeIds; // Danh sách mã kích hoạt mua
-    private double totalAmount; // Tổng số tiền
-    private Date orderDate; // Ngày đặt hàng
-    private OrderStatus orderStatus; // Trạng thái đơn hàng
+    private List<String> bookIds;
+    private String activationCodeId;
+    private Date orderDate;
+    private OrderStatus orderStatus;
 
-    public Order(String userId, List<String> activationCodeIds, double totalAmount, Date orderDate, OrderStatus orderStatus) {
-        this.userId = userId;
-        this.activationCodeIds = activationCodeIds;
-        this.totalAmount = totalAmount;
-        this.orderDate = orderDate;
-        this.orderStatus = orderStatus;
-    }
-    private enum OrderStatus {
+    public enum OrderStatus {
         ORDERED,
         DELIVERED,
         CANCELLED

@@ -4,15 +4,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-import tdtu.edu.vn.model.Book;
+import tdtu.edu.vn.model.Document;
 
-public interface BookRepository extends MongoRepository<Book, String> {
-    Book findByName(String name);
-    Page<Book> findAll(Pageable pageable);
+public interface DocumentRepository extends MongoRepository<Document, String> {
+    Document findByName(String name);
+    Page<Document> findAll(Pageable pageable);
 
 
     @Query(value = "{ $text: { $search:  ?0 } }", sort = "{ score: { $meta: \"textScore\" }, _id: -1 }")
-    Page<Book> searchByName(String keyword, Pageable pageable);
+    Page<Document> searchByName(String keyword, Pageable pageable);
 
-    Page<Book> findByCategoryId(String categoryId, Pageable pageable);
+    Page<Document> findByCategoryId(String categoryId, Pageable pageable);
 }
