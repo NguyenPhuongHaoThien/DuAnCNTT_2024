@@ -51,6 +51,8 @@ public class CustomFilterSecurity {
                         "/register",
                         "/home/**",
                         "/read/**").permitAll()
+                .antMatchers("/admin/**").permitAll()
+                .antMatchers("/orders/**").permitAll()
                 // Tất cả các request khác đều cần xác thực
                 .anyRequest().authenticated()
                 .and()

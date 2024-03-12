@@ -70,4 +70,37 @@ public class UserService implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
     }
+
+    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with email: " + email);
+        }
+
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public boolean deleteUser(String userId) {
+        try {
+            userRepository.deleteById(userId);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public User updateUser(User updatedUser) {
+        return userRepository.save(updatedUser);
+    }
 }

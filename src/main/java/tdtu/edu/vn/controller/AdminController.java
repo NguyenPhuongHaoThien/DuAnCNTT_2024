@@ -66,4 +66,83 @@ public class AdminController {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllDocuments() {
+        List<User> users = userService.getAllUsers();
+
+        if (users == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("/create-user")
+    public ResponseEntity<User> createUser(@RequestBody User newUser) {
+        newUser.setId(null);
+
+        User savedUser = userService.createUser(newUser);
+
+        if (savedUser == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.ok(savedUser);
+    }
+
+    @PostMapping("/update-user")
+    public ResponseEntity<User> updateUser(@RequestBody User updatedUser) {
+        User existingUser = userService.findByEmail(updatedUser.getEmail());
+
+        if (existingUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User savedUser = userService.updateUser(updatedUser);
+
+        if (savedUser == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.ok(savedUser);
+    }
+
+    @PostMapping("/delete-user")
+    public ResponseEntity<User> deleteUser(@RequestBody User user, Principal principal) {
+        if (principal.getName().equals(user.getEmail())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        User existingUser = userService.findByEmail(user.getEmail());
+
+        if (existingUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (userService.deleteUser(user.getId())) {
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    @PostMapping("/change-user-password")
+    public ResponseEntity<User> changeUserPassword(@RequestBody User user) {
+        User existingUser = userService.findByEmail(user.getEmail());
+
+        if (existingUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        existingUser.setConfirmPassword(passwordEncoder.encode(user.getPassword()));
+        User savedUser = userService.updateUser(existingUser);
+
+        if (savedUser == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return ResponseEntity.ok(savedUser);
+    }
 }
