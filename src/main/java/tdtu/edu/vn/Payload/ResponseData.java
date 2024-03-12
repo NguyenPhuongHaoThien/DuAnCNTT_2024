@@ -2,11 +2,11 @@ package tdtu.edu.vn.Payload;
 
 
 public class ResponseData {
-   private int Status = 200;
-   private String desc;
-   private Object data;
+    private int Status = 200;
+    private String desc;
+    private Object data;
 
-   private boolean success = true;
+    private boolean success = true;
 
     public int getStatus() {
         return Status;
